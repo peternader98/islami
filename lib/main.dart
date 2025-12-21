@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:islami/home/home.dart';
+import 'package:islami/intro/intro_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,8 +16,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Islami',
       debugShowCheckedModeBanner: false,
-      initialRoute: Home.routeName,
+      initialRoute: IntroScreen.routeName,
       routes: {
+        IntroScreen.routeName: (context) => IntroScreen(),
         Home.routeName: (context) => Home(),
       },
     );
