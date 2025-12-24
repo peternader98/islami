@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:islami/home/home.dart';
-import 'package:islami/intro/intro_screen.dart';
+import 'package:islami/screens/home/home.dart';
+import 'package:islami/screens/intro/intro_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

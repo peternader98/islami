@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:islami/core/islami_colors.dart';
 import 'package:islami/core/islami_styles.dart';
-import 'package:islami/home/home.dart';
+import 'package:islami/screens/home/home.dart';
 
 class IntroScreen extends StatefulWidget {
   IntroScreen({super.key});
