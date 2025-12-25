@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:islami/core/islami_colors.dart';
 import 'package:islami/core/islami_styles.dart';
 import 'package:islami/models/sura_model.dart';
+import 'package:islami/screens/home/sura_details/sura_details.dart';
+import 'package:islami/widgets/sura_item.dart';
 
 class QuranTab extends StatelessWidget {
-  QuranTab({super.key, required this.suraModel});
+  QuranTab({super.key});
+
+  static const String routeName = 'QURAN_TAB';
 
   List<String> arabicQuranSuras = [
     "الفاتحه",
@@ -355,8 +359,6 @@ class QuranTab extends StatelessWidget {
     '6',
   ];
 
-  SuraModel suraModel;
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -432,17 +434,24 @@ class QuranTab extends StatelessWidget {
             SizedBox(height: 10),
             Text('Suras List', style: IslamiStyles.bodySmall),
             SizedBox(height: 10),
-            // Expanded(
-            //   child: ListView.separated(
-            //     padding: EdgeInsets.zero,
-            //     itemBuilder:,
-            //     separatorBuilder: (context, index) =>
-            //         Divider(
-            //           color: IslamiColors.white, indent: 44, endIndent: 44,
-            //         ),
-            //     itemCount: arabicQuranSuras.length,
-            //   ),
-            // ),
+            Expanded(
+              child: ListView.separated(
+                padding: EdgeInsets.zero,
+                itemCount: arabicQuranSuras.length,
+                separatorBuilder: (context, index) =>
+                    Divider(
+                      color: IslamiColors.white, indent: 44, endIndent: 44,
+                    ),
+                itemBuilder: (context, index) {
+                  return InkWell(
+                    onTap: () {
+                      Navigator.pushNamed(context, SuraDetails.routeName, arguments: SuraModel(nameAr: arabicQuranSuras[index], nameEn: englishQuranSuras[index], versesCount: ayaNumber[index], index: index));
+                    },
+                    child: SuraItem(suraModel: SuraModel(nameAr: arabicQuranSuras[index], nameEn: englishQuranSuras[index], versesCount: ayaNumber[index], index: index)),
+                  );
+                },
+              ),
+            ),
           ],
         ),
       ),

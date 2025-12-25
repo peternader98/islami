@@ -20,7 +20,7 @@ class _HomeState extends State<Home> {
   int selectedIndex = 0;
 
   List<Widget> tabs = [
-    QuranTab(suraModel: SuraModel(nameAr: 'nameAr', nameEn: 'nameEn', versesCount: 'versesCount', index: 0),),
+    QuranTab(),
     HadethTab(),
     SebhaTab(),
     RadioTab(),

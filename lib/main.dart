@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:islami/screens/home/home.dart';
+import 'package:islami/screens/home/sura_details/sura_details.dart';
+import 'package:islami/screens/home/tabs/quran_tab.dart';
 import 'package:islami/screens/intro/intro_screen.dart';
 
 void main() async {
@@ -20,6 +22,8 @@ class MyApp extends StatelessWidget {
       routes: {
         IntroScreen.routeName: (context) => IntroScreen(),
         Home.routeName: (context) => Home(),
+        QuranTab.routeName: (context) => QuranTab(),
+        SuraDetails.routeName: (context) => SuraDetails(),
       },
     );
   }
