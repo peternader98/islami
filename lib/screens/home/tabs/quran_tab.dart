@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:islami/core/cache_helper.dart';
 import 'package:islami/core/islami_colors.dart';
 import 'package:islami/core/islami_styles.dart';
 import 'package:islami/models/sura_model.dart';
 import 'package:islami/screens/home/sura_details/sura_details.dart';
 import 'package:islami/widgets/sura_item.dart';
 
-class QuranTab extends StatelessWidget {
+class QuranTab extends StatefulWidget {
   QuranTab({super.key});
 
   static const String routeName = 'QURAN_TAB';
 
+  @override
+  State<QuranTab> createState() => _QuranTabState();
+}
+
+class _QuranTabState extends State<QuranTab> {
   List<String> arabicQuranSuras = [
     "الفاتحه",
     "البقرة",
@@ -126,6 +132,7 @@ class QuranTab extends StatelessWidget {
     "الفلق",
     "الناس",
   ];
+
   List<String> englishQuranSuras = [
     "Al-Fatiha",
     "Al-Baqarah",
@@ -242,6 +249,7 @@ class QuranTab extends StatelessWidget {
     "Al-Falaq",
     "An-Nas",
   ];
+
   List<String> ayaNumber = [
     '7',
     '286',
@@ -359,8 +367,44 @@ class QuranTab extends StatelessWidget {
     '6',
   ];
 
+  List<SuraModel> suraListData = [];
+
+  List<SuraModel> filteredSuraListData = [];
+
+  TextEditingController searchController = TextEditingController();
+
+  void createSuras() {
+    for (int i = 0; i < arabicQuranSuras.length; i++) {
+      suraListData.add(
+        SuraModel(
+          nameAr: arabicQuranSuras[i],
+          nameEn: englishQuranSuras[i],
+          versesCount: ayaNumber[i],
+          index: i,
+        ),
+      );
+    }
+  }
+
+  _filterData(String value) {
+    filteredSuraListData = suraListData.where((element) {
+      return element.nameAr.contains(value) || element.nameEn.toLowerCase().contains(value);
+    }).toList();
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    createSuras();
+    filteredSuraListData = suraListData;
+  }
+
   @override
   Widget build(BuildContext context) {
+    List<String> mostRecentList =
+        CacheHelper.getSurasList()?.reversed.toList() ?? [];
+
     return Container(
       decoration: BoxDecoration(
         image: DecorationImage(
@@ -376,6 +420,10 @@ class QuranTab extends StatelessWidget {
           children: [
             SizedBox(height: 192),
             TextField(
+              controller: searchController,
+              onChanged: (value) {
+                _filterData(value);
+              },
               decoration: InputDecoration(
                 prefixIcon: Image.asset(
                   'assets/images/quran.png',
@@ -393,61 +441,96 @@ class QuranTab extends StatelessWidget {
                 ),
               ),
               cursorColor: IslamiColors.gold,
+              style: IslamiStyles.bodySmall,
             ),
             SizedBox(height: 20),
-            Text('Most Recently', style: IslamiStyles.bodySmall),
-            SizedBox(height: 10),
-            Container(
-              height: 160,
-              child: ListView.separated(
-                scrollDirection: Axis.horizontal,
-                itemCount: arabicQuranSuras.length,
-                separatorBuilder: (context, index) => SizedBox(width: 10,),
-                itemBuilder: (context, index) {
-                return Container(
-                  height: 150,
-                  width: 283,
-                  padding: EdgeInsets.all(17),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: IslamiColors.gold,
-                  ),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(englishQuranSuras[index], style: IslamiStyles.title.copyWith(color: IslamiColors.black),),
-                            Text(arabicQuranSuras[index], style: IslamiStyles.title.copyWith(color: IslamiColors.black),),
-                            Text('${ayaNumber[index]} Verses', style: IslamiStyles.title.copyWith(color: IslamiColors.black, fontSize: 14),),
-                          ],
-                        ),
+            if (mostRecentList.isNotEmpty) ...[
+              Text('Most Recently', style: IslamiStyles.bodySmall),
+              SizedBox(height: 10),
+              Container(
+                height: 160,
+                child: ListView.separated(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: mostRecentList.length,
+                  separatorBuilder: (context, index) => SizedBox(width: 10),
+                  itemBuilder: (context, index) {
+                    return Container(
+                      height: 150,
+                      width: 283,
+                      padding: EdgeInsets.all(17),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: IslamiColors.gold,
                       ),
-                      Expanded(child: Image.asset('assets/images/most_recent.png'),),
-                    ],
-                  ),
-                );
-              },),
-            ),
-            SizedBox(height: 10),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  englishQuranSuras[int.parse(
+                                    mostRecentList[index],
+                                  )],
+                                  style: IslamiStyles.title.copyWith(
+                                    color: IslamiColors.black,
+                                  ),
+                                ),
+                                Text(
+                                  arabicQuranSuras[int.parse(
+                                    mostRecentList[index],
+                                  )],
+                                  style: IslamiStyles.title.copyWith(
+                                    color: IslamiColors.black,
+                                  ),
+                                ),
+                                Text(
+                                  '${ayaNumber[int.parse(mostRecentList[index])]} Verses',
+                                  style: IslamiStyles.title.copyWith(
+                                    color: IslamiColors.black,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Expanded(
+                            child: Image.asset('assets/images/most_recent.png'),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ),
+              SizedBox(height: 10),
+            ],
             Text('Suras List', style: IslamiStyles.bodySmall),
             SizedBox(height: 10),
             Expanded(
               child: ListView.separated(
                 padding: EdgeInsets.zero,
-                itemCount: arabicQuranSuras.length,
-                separatorBuilder: (context, index) =>
-                    Divider(
-                      color: IslamiColors.white, indent: 44, endIndent: 44,
-                    ),
+                itemCount: filteredSuraListData.length,
+                separatorBuilder: (context, index) => Divider(
+                  color: IslamiColors.white,
+                  indent: 44,
+                  endIndent: 44,
+                ),
                 itemBuilder: (context, index) {
                   return InkWell(
-                    onTap: () {
-                      Navigator.pushNamed(context, SuraDetails.routeName, arguments: SuraModel(nameAr: arabicQuranSuras[index], nameEn: englishQuranSuras[index], versesCount: ayaNumber[index], index: index));
+                    onTap: () async {
+                      await CacheHelper.saveSurasList(index);
+                      setState(() {});
+                      Navigator.pushNamed(
+                        context,
+                        SuraDetails.routeName,
+                        arguments: filteredSuraListData[index],
+                      );
                     },
-                    child: SuraItem(suraModel: SuraModel(nameAr: arabicQuranSuras[index], nameEn: englishQuranSuras[index], versesCount: ayaNumber[index], index: index)),
+                    child: SuraItem(
+                      suraModel: filteredSuraListData[index],
+                    ),
                   );
                 },
               ),

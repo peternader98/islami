@@ -64,21 +64,6 @@ class _SuraDetailsState extends State<SuraDetails> {
                   ),
                 ),
               ),
-              // Expanded(
-              //   child: ListView.builder(
-              //     itemCount: versesLines.length,
-              //     itemBuilder: (context, index) {
-              //       return Directionality(
-              //         textDirection: TextDirection.rtl,
-              //         child: Text(
-              //           '[${index + 1}] ${versesLines[index]}',
-              //           style: IslamiStyles.body,
-              //           textAlign: TextAlign.center,
-              //         ),
-              //       );
-              //     },
-              //   ),
-              // ),
               SizedBox(height: 110,)
             ],
           ),
