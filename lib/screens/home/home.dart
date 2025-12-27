@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:islami/core/islami_colors.dart';
-import 'package:islami/models/sura_model.dart';
 import 'package:islami/screens/home/tabs/hadeth_tab.dart';
 import 'package:islami/screens/home/tabs/quran_tab.dart';
 import 'package:islami/screens/home/tabs/radio_tab.dart';
