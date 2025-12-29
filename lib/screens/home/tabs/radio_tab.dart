@@ -34,7 +34,7 @@ class _RadioTabState extends State<RadioTab> {
         ),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
